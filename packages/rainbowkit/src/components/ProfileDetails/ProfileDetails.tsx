@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { formatUnits } from 'viem';
 import type { GetEnsNameReturnType } from 'viem';
 import type { GetEnsAvatarReturnType } from 'viem/actions';
 import type { useAccount } from 'wagmi';
@@ -60,7 +61,10 @@ export function ProfileDetails({
   }
 
   const accountName = ensName ? formatENS(ensName) : formatAddress(address);
-  const ethBalance = balance?.formatted;
+  const ethBalance = formatUnits(
+    BigInt(balance?.value ?? 0),
+    balance?.decimals ?? 18,
+  );
   const displayBalance = ethBalance
     ? abbreviateETHBalance(Number.parseFloat(ethBalance))
     : undefined;
